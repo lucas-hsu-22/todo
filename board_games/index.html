@@ -35,12 +35,12 @@
     <div>
       <p class="eyebrow">Find your next favorite</p>
       <h1>Good games.<br>Better game nights.</h1>
-      <p class="hero-copy">Explore tabletop favorites, find a game for your group, and spot retailer offers before your next game night.</p>
+      <p class="hero-copy">Explore BoardGameGeek’s current top 100 ranked games, search the list, and find a new favorite for your table.</p>
       <form class="search-wrap" id="home-search-form"><span class="search-icon" aria-hidden="true">⌕</span><input id="home-search" type="search" placeholder="Search games, styles, or players…" aria-label="Search board games"><button type="submit">Search</button></form>
     </div>
     <div class="hero-art" aria-hidden="true"><div class="sun"></div><div class="game-box"><span class="box-kicker">A GAME FOR EVERY TABLE</span><span class="box-title">GAME<br>NIGHT</span><div class="box-land"><i class="hex"></i><i class="hex"></i><i class="hex"></i></div></div></div>
   </div>
-  <div class="section-head"><div><h2>Popular around the table</h2><p>Well-loved picks across strategy, family, and party games.</p></div><button class="text-button" id="home-deals-link">See current deals →</button></div>
+  <div class="section-head"><div><h2>BoardGameGeek Top 100</h2><p>Community rankings checked November 6, 2026. <a href="https://boardgamegeek.com/browse/boardgame?sort=rank" target="_blank" rel="noopener noreferrer" style="color:var(--green);font-weight:750">View the current BGG ranking ↗</a></p></div><button class="text-button" id="home-deals-link">See current deals →</button></div>
   <div class="game-grid" id="game-grid"></div>
   <div class="band"><div><strong>Looking for a good deal?</strong><p>Compare retailer listings for a few tabletop favorites.</p></div><button class="text-button" id="band-deals-link">Browse price deals →</button></div>
 </section>
@@ -52,16 +52,8 @@
 </main>
 <footer class="shell footer">Prices shown are examples from retailer listings and may change by location, stock, seller, or time. Always confirm the final price and shipping at checkout. Retailer links open retailer listings.</footer>
 <script>
-const games=[
-{name:"CATAN",rank:"01 · Modern classic",icon:"🌋",cover:"catan",category:"Strategy · Trading",description:"Build, trade, and settle a changing island.",players:"3–4 players",rating:"4.8"},
-{name:"Ticket to Ride",rank:"02 · Family favorite",icon:"🚂",cover:"ticket",category:"Family · Route building",description:"Connect cities by claiming railway routes.",players:"2–5 players",rating:"4.8"},
-{name:"Azul",rank:"03 · Easy to learn",icon:"🟦",cover:"azul",category:"Abstract · Tile drafting",description:"Draft colorful tiles to make a palace mosaic.",players:"2–4 players",rating:"4.8"},
-{name:"Wingspan",rank:"04 · Nature & strategy",icon:"🪶",cover:"wingspan",category:"Strategy · Engine building",description:"Discover birds and build a thriving habitat.",players:"1–5 players",rating:"4.8"},
-{name:"Codenames",rank:"Party pick",icon:"🕵️",cover:"codenames",category:"Party · Word game",description:"Give clever clues so your team finds its words.",players:"4–8+ players",rating:"4.7"},
-{name:"Pandemic",rank:"Team favorite",icon:"🧪",cover:"pandemic",category:"Cooperative · Strategy",description:"Work together to stop outbreaks around the world.",players:"2–4 players",rating:"4.7"},
-{name:"Carcassonne",rank:"Tile-laying pick",icon:"🏰",cover:"carcassonne",category:"Family · Tile placement",description:"Grow a medieval landscape one tile at a time.",players:"2–5 players",rating:"4.7"},
-{name:"Dixit",rank:"Creative pick",icon:"🪄",cover:"dixit",category:"Party · Storytelling",description:"Turn dreamlike illustrations into imaginative clues.",players:"3–8 players",rating:"4.7"}
-];
+const titles=["Brass: Birmingham","Ark Nova","Pandemic Legacy: Season 1","Gloomhaven","Dune: Imperium – Uprising","Dune: Imperium","Twilight Imperium: Fourth Edition","War of the Ring: Second Edition","Terraforming Mars","Star Wars: Rebellion","Spirit Island","Gloomhaven: Jaws of the Lion","Gaia Project","SETI: Search for Extraterrestrial Intelligence","Slay the Spire: The Board Game","Twilight Struggle","The Castles of Burgundy","The Lord of the Rings: Duel for Middle-earth","Through the Ages: A New Story of Civilization","Frosthaven","Great Western Trail","Brass: Lancashire","Eclipse: Second Dawn for the Galaxy","7 Wonders Duel","Nemesis","A Feast for Odin","Scythe","Clank! Legacy: Acquisitions Incorporated","Concordia","Lost Ruins of Arnak","Great Western Trail: Second Edition","Sky Team","Arkham Horror: The Card Game","Root","Orléans","Terra Mystica","Too Many Bones","Wingspan","Barrage","Mage Knight Board Game","Hegemony: Lead Your Class to Victory","Kanban EV","Crokinole","Clank!: Catacombs","Viticulture Essential Edition","The Crew: Mission Deep Sea","Everdell","Heat: Pedal to the Metal","Ticket to Ride Legacy: Legends of the West","Marvel Champions: The Card Game","The Lord of the Rings: Fate of the Fellowship","Harmonies","Food Chain Magnate","Underwater Cities","Cthulhu: Death May Die","Pax Pamir: Second Edition","Age of Innovation","Puerto Rico","On Mars","Pandemic Legacy: Season 0","Blood on the Clocktower","Cascadia","Caverna: The Cave Farmers","Anachrony","Oathsworn: Into the Deepwood","Endeavor: Deep Sea","Agricola","Obsession","Grand Austria Hotel","Blood Rage","Lisboa","The White Castle","Great Western Trail: New Zealand","Pandemic Legacy: Season 2","Voidfall","Power Grid","Tzolk'in: The Mayan Calendar","Sleeping Gods","Clans of Caledonia","Mansions of Madness: Second Edition","The Quacks of Quedlinburg","Bomb Busters","Paladins of the West Kingdom","Le Havre","Android: Netrunner","Agricola (Revised Edition)","The Gallerist","Star Wars: Imperial Assault","Wingspan Asia","Darwin's Journey","Maracaibo","Revive","Final Girl","Mechs vs. Minions","Race for the Galaxy","Kingdom Death: Monster","The Crew: The Quest for Planet Nine","Five Tribes: The Djinns of Naqala","Azul","Clank!: A Deck-Building Adventure"];
+const games=titles.map((name,index)=>({name,rank:index+1}));
 const deals=[
 {name:"Ticket to Ride: Europe",icon:"🚂",type:"ticket",description:"Family strategy · 2–5 players · 30–60 minutes",sale:true,current:39.95,was:62.49,retailers:[{name:"Walmart",price:"$39.95",href:"https://www.walmart.com/c/kp/tickets-to-ride",note:"Sale listing"},{name:"GameStop",price:"Check price",href:"https://www.gamestop.com/search/?q=Ticket%20to%20Ride",note:"Retailer search"}]},
 {name:"CATAN (6th Edition)",icon:"🌋",type:"catan",description:"Strategy & trading · 3–4 players · 60–90 minutes",sale:false,current:39.99,was:null,retailers:[{name:"Target",price:"$39.99",href:"https://www.target.com/p/-/A-94081464",note:"In stock when checked"},{name:"Amazon",price:"$39.99",href:"https://www.amazon.com/s?k=CATAN+6th+Edition+board+game",note:"Price tracker listing"}]},
@@ -70,8 +62,14 @@ const deals=[
 const gameGrid=document.getElementById("game-grid"),dealList=document.getElementById("deal-list"),homeSearch=document.getElementById("home-search"),dealSearch=document.getElementById("deal-search");
 function esc(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
 function renderGames(query=""){
- const term=query.trim().toLowerCase(),filtered=games.filter(g=>[g.name,g.category,g.description,g.players].join(" ").toLowerCase().includes(term));
- gameGrid.innerHTML=filtered.length?filtered.map(g=>'<article class="game-card"><div class="game-cover cover-'+g.cover+'"><span class="rank">'+g.rank+'</span><span class="cover-symbol" aria-hidden="true">'+g.icon+'</span></div><div class="game-info"><h3>'+g.name+'</h3><p>'+g.description+'</p><div class="meta"><span>'+g.players+'</span><span class="stars">★ '+g.rating+'</span></div></div></article>').join(""):'<div class="empty" style="grid-column:1/-1">No games match “'+esc(query)+'”. Try a title, category, or player count.</div>';
+ const term=query.trim().toLowerCase().replace(/^#/,"");
+ const filtered=games.filter(game=>game.name.toLowerCase().includes(term)||String(game.rank)===term);
+ const covers=["catan","ticket","azul","wingspan","codenames","pandemic","carcassonne","dixit"];
+ const icons=["🎲","♟","🧩","🌟","🃏","🎯","🏆","🪄"];
+ gameGrid.innerHTML=filtered.length?filtered.map(game=>{
+  const i=(game.rank-1)%covers.length;
+  return '<article class="game-card"><div class="game-cover cover-'+covers[i]+'"><span class="rank">#'+String(game.rank).padStart(2,"0")+'</span><span class="cover-symbol" aria-hidden="true">'+icons[i]+'</span></div><div class="game-info"><h3>'+escapeHtml(game.name)+'</h3><p>BoardGameGeek community-ranked game</p><div class="meta"><span>Rank #'+game.rank+'</span><a href="https://boardgamegeek.com/search/boardgame?q='+encodeURIComponent(game.name)+'" target="_blank" rel="noopener noreferrer" style="color:var(--green);font-weight:800;text-decoration:none">View on BGG ↗</a></div></div></article>';
+ }).join(""):'<div class="empty" style="grid-column:1/-1">No games match “'+escapeHtml(query)+'”. Try a title or rank number.</div>';
 }
 function renderDeals(query=""){
  const term=query.trim().toLowerCase(),filtered=deals.filter(d=>[d.name,d.description,...d.retailers.map(r=>r.name)].join(" ").toLowerCase().includes(term));
