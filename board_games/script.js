@@ -6,6 +6,47 @@ const deals=[
 {name:"Azul",icon:"🟦",type:"azul",description:"Tile drafting · 2–4 players · 30–45 minutes",sale:false,current:31.99,was:null,retailers:[{name:"Target",price:"$31.99",href:"https://www.target.com/p/-/A-53287255",note:"Retailer listing"},{name:"Walmart",price:"$31.99",href:"https://www.walmart.com/c/kp/azul-board-game",note:"Online listing"}]}
 ];
 
+
+const FAVORITES_KEY="tabletopScout.favorites.v1";
+const MAX_FAVORITES_JSON_LENGTH=8192;
+const knownGameNames=new Set(games.map(game=>game.name));
+let favoriteNames=new Set();
+let showFavoritesOnly=false;
+let favoriteStorageAvailable=true;
+function loadFavoriteNames(){
+ try{
+  const storage=window.localStorage;
+  const raw=storage.getItem(FAVORITES_KEY);
+  if(raw===null||raw==="") return new Set();
+  if(raw.length>MAX_FAVORITES_JSON_LENGTH) throw new Error("Saved favorites are too large");
+  const parsed=JSON.parse(raw);
+  if(!parsed||parsed.version!==1||!Array.isArray(parsed.favorites)||parsed.favorites.length>games.length) throw new Error("Saved favorites have an invalid format");
+  const clean=parsed.favorites.filter(name=>typeof name==="string"&&knownGameNames.has(name));
+  const result=new Set(clean);
+  if(result.size!==parsed.favorites.length){
+   storage.setItem(FAVORITES_KEY,JSON.stringify({version:1,favorites:[...result].sort()}));
+  }
+  return result;
+ }catch{
+  try{window.localStorage.removeItem(FAVORITES_KEY)}catch{favoriteStorageAvailable=false}
+  return new Set();
+ }
+}
+function saveFavoriteNames(){
+ try{
+  const values=[...favoriteNames].filter(name=>knownGameNames.has(name)).sort();
+  const serialized=JSON.stringify({version:1,favorites:values});
+  if(serialized.length>MAX_FAVORITES_JSON_LENGTH) return false;
+  window.localStorage.setItem(FAVORITES_KEY,serialized);
+  favoriteStorageAvailable=true;
+  return true;
+ }catch{
+  favoriteStorageAvailable=false;
+  return false;
+ }
+}
+favoriteNames=loadFavoriteNames();
+
 const gameGrid=document.getElementById("game-grid");
 const dealList=document.getElementById("deal-list");
 const homeSearch=document.getElementById("home-search");
@@ -28,16 +69,31 @@ function makeExternalLink(label,urlValue,className){
  link.referrerPolicy="no-referrer";
  return link;
 }
+function updateFavoriteControls(message=""){
+ const filterButton=document.getElementById("favorite-filter");
+ const status=document.getElementById("favorite-status");
+ filterButton.textContent=showFavoritesOnly?"Show all games":"Show favorites ("+favoriteNames.size+")";
+ filterButton.setAttribute("aria-pressed",String(showFavoritesOnly));
+ status.textContent=message||(favoriteStorageAvailable?"Favorites are saved in this browser.":"Browser storage is unavailable; favorites will last only until this page closes.");
+}
+function toggleFavorite(gameName){
+ if(!knownGameNames.has(gameName)) return;
+ if(favoriteNames.has(gameName)) favoriteNames.delete(gameName);
+ else favoriteNames.add(gameName);
+ const saved=saveFavoriteNames();
+ updateFavoriteControls(saved?"Favorite list saved on this device.":"Could not save favorites; they will remain only for this page session.");
+ renderGames(homeSearch.value);
+}
 function renderGames(query=""){
  const value=String(query).slice(0,100);
  const term=value.trim().toLowerCase().replace(/^#/,"");
- const filtered=games.filter(game=>game.name.toLowerCase().includes(term)||String(game.rank)===term);
+ const filtered=games.filter(game=>(game.name.toLowerCase().includes(term)||String(game.rank)===term)&&(!showFavoritesOnly||favoriteNames.has(game.name)));
  const covers=["catan","ticket","azul","wingspan","codenames","pandemic","carcassonne","dixit"];
  const icons=["🎲","♟","🧩","🌟","🃏","🎯","🏆","🪄"];
  const fragment=document.createDocumentFragment();
  if(!filtered.length){
-  const empty=makeElement("div","empty",'No games match "'+value+'". Try a title or rank number.');
-  fragment.append(empty);
+  const message=showFavoritesOnly&&favoriteNames.size===0?"No favorites saved yet. Use the Save button on a game card to add one.":'No games match "'+value+'". Try a title or rank number.';
+  fragment.append(makeElement("div","empty",message));
  }else{
   filtered.forEach(game=>{
    const i=(game.rank-1)%covers.length;
@@ -50,6 +106,13 @@ function renderGames(query=""){
    const info=makeElement("div","game-info");
    info.append(makeElement("h3","",game.name));
    info.append(makeElement("p","","BoardGameGeek community-ranked game"));
+   const isFavorite=favoriteNames.has(game.name);
+   const favoriteButton=makeElement("button","favorite-button",isFavorite?"★ Saved":"☆ Save");
+   favoriteButton.type="button";
+   favoriteButton.setAttribute("aria-pressed",String(isFavorite));
+   favoriteButton.setAttribute("aria-label",(isFavorite?"Remove ":"Add ")+game.name+(isFavorite?" from":" to")+" favorites");
+   favoriteButton.addEventListener("click",()=>toggleFavorite(game.name));
+   info.append(favoriteButton);
    const meta=makeElement("div","meta");
    meta.append(makeElement("span","","Rank #"+game.rank));
    const gameUrl=new URL("https://boardgamegeek.com/search/boardgame");
@@ -107,7 +170,12 @@ function showPage(page){
  const isHome=page==="home";
  document.getElementById("home-page").hidden=!isHome;
  document.getElementById("deals-page").hidden=isHome;
- document.querySelectorAll(".nav-button").forEach(button=>button.classList.toggle("active",button.dataset.page===page));
+ document.getElementById("favorite-filter").addEventListener("click",()=>{
+ showFavoritesOnly=!showFavoritesOnly;
+ updateFavoriteControls();
+ renderGames(homeSearch.value);
+});
+document.querySelectorAll(".nav-button").forEach(button=>button.classList.toggle("active",button.dataset.page===page));
  window.scrollTo({top:0,behavior:"smooth"});
 }
 document.querySelectorAll(".nav-button").forEach(button=>button.addEventListener("click",()=>showPage(button.dataset.page)));
@@ -116,5 +184,6 @@ document.getElementById("home-search-form").addEventListener("submit",event=>{ev
 document.getElementById("deal-search-form").addEventListener("submit",event=>{event.preventDefault();renderDeals(dealSearch.value)});
 homeSearch.addEventListener("input",()=>renderGames(homeSearch.value));
 dealSearch.addEventListener("input",()=>renderDeals(dealSearch.value));
+updateFavoriteControls();
 renderGames();
 renderDeals();

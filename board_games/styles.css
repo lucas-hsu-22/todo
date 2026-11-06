@@ -13,3 +13,11 @@
 @media(max-width:900px){.hero{padding:40px;grid-template-columns:1fr .65fr}.game-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:620px){.shell{width:min(100% - 28px,1160px)}.topbar{height:66px}.brand{font-size:17px}.nav{gap:0}.nav button{padding:9px 10px;font-size:12px}.hero{display:block;margin:18px 0 38px;padding:30px 23px;border-radius:22px}.hero-art{display:none}.hero-copy{font-size:14px}.search-wrap{gap:8px}.search-wrap button{padding:10px 12px}.section-head h2{font-size:24px}.section-head{align-items:start}.game-grid{gap:10px}.game-cover{height:125px}.cover-symbol{width:68px;height:68px;font-size:32px}.game-info{padding:12px}.band{align-items:start;flex-direction:column;margin:38px 0}.deal-toolbar{align-items:start;flex-direction:column}.deal-card{grid-template-columns:58px 1fr;gap:12px;padding:13px}.deal-icon{width:58px;height:58px;border-radius:12px;font-size:26px}.price-block{grid-column:2;text-align:left}.price{display:inline-block;margin-right:7px;font-size:22px}.was{display:inline-block}.save{display:inline-block;margin-left:6px}.buy-btn{margin-top:8px}}
 .eyebrow-muted{color:var(--green)}.source-link{color:var(--green);font-weight:750}.bgg-link{color:var(--green);font-size:11px;font-weight:800;text-decoration:none}.bgg-link:hover{text-decoration:underline}
+
+.favorite-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:-6px 0 16px}
+.favorite-filter,.favorite-button{border:1px solid var(--line);background:var(--white);color:var(--green);border-radius:10px;padding:9px 12px;font-size:12px;font-weight:800}
+.favorite-filter[aria-pressed="true"],.favorite-button[aria-pressed="true"]{background:#eff4d9;border-color:#d2df99;color:var(--dark)}
+.favorite-button{margin:0 0 12px;background:#f7f6ef}
+.favorite-status{font-size:12px;color:var(--muted)}
+.favorite-filter:focus-visible,.favorite-button:focus-visible{outline:2px solid #2563eb;outline-offset:2px}
+@media(max-width:620px){.favorite-toolbar{align-items:flex-start;flex-direction:column}}
