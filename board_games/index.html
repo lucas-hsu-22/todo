@@ -1,1 +1,44 @@
-fd
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; base-uri 'none'; object-src 'none'; connect-src 'none'; img-src 'none'; font-src 'none'; form-action 'none'">
+<title>Tabletop Scout — Board Games & Deals</title>
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<header class="shell topbar">
+  <div class="brand"><span class="brand-mark">♟</span> Tabletop Scout</div>
+  <nav class="nav" aria-label="Main navigation">
+    <button class="nav-button active" data-page="home">Discover</button>
+    <button class="nav-button deals-link" data-page="deals">Price deals</button>
+  </nav>
+</header>
+<main>
+<section class="shell" id="home-page">
+  <div class="hero">
+    <div>
+      <p class="eyebrow">Find your next favorite</p>
+      <h1>Good games.<br>Better game nights.</h1>
+      <p class="hero-copy">Explore BoardGameGeek’s current top 100 ranked games, search the list, and find a new favorite for your table.</p>
+      <form class="search-wrap" id="home-search-form"><span class="search-icon" aria-hidden="true">⌕</span><input id="home-search" type="search" maxlength="100" autocomplete="off" spellcheck="false" placeholder="Search games, styles, or players…" aria-label="Search board games"><button type="submit">Search</button></form>
+    </div>
+    <div class="hero-art" aria-hidden="true"><div class="sun"></div><div class="game-box"><span class="box-kicker">A GAME FOR EVERY TABLE</span><span class="box-title">GAME<br>NIGHT</span><div class="box-land"><i class="hex"></i><i class="hex"></i><i class="hex"></i></div></div></div>
+  </div>
+  <div class="section-head"><div><h2>BoardGameGeek Top 100</h2><p>Community rankings checked November 6, 2026. <a href="https://boardgamegeek.com/browse/boardgame?sort=rank" target="_blank" rel="noopener noreferrer" class="source-link">View the current BGG ranking ↗</a></p></div><button class="text-button" id="home-deals-link">See current deals →</button></div>
+  <div class="favorite-toolbar"><button id="favorite-filter" class="favorite-filter" type="button" aria-pressed="false">Show favorites (0)</button><span id="favorite-status" class="favorite-status" role="status" aria-live="polite">Favorites are saved in this browser.</span></div>
+  <div class="game-grid" id="game-grid"></div>
+  <div class="band"><div><strong>Looking for a good deal?</strong><p>Compare retailer listings for a few tabletop favorites.</p></div><button class="text-button" id="band-deals-link">Browse price deals →</button></div>
+</section>
+<section class="shell" id="deals-page" hidden>
+  <div class="deals-intro"><p class="eyebrow eyebrow-muted">Price watch</p><h1>Find a game night deal.</h1><p>Compare example listings from popular retailers. Prices and availability can change, so check the store page before you buy.</p></div>
+  <div class="deal-toolbar"><form class="search-wrap" id="deal-search-form"><span class="search-icon" aria-hidden="true">⌕</span><input id="deal-search" type="search" maxlength="100" autocomplete="off" spellcheck="false" placeholder="Search the deal list…" aria-label="Search board game deals"><button type="submit">Search</button></form><span class="deal-note">Listings checked November 6, 2026</span></div>
+  <div class="deal-list" id="deal-list"></div>
+</section>
+</main>
+<footer class="shell footer">Prices shown are examples from retailer listings and may change by location, stock, seller, or time. Always confirm the final price and shipping at checkout. Retailer links open retailer listings.</footer>
+<script src="./script.js" defer></script>
+</body>
+</html>
